@@ -1,5 +1,5 @@
 <script setup>
-import { Link, usePage, useForm } from '@inertiajs/vue3'
+import { Link, usePage, useForm, router } from '@inertiajs/vue3'
 import { watch } from 'vue'
 import AppLayout from '@/Layouts/AppLayout.vue'
 
@@ -23,6 +23,11 @@ const limpiar = () => {
   filter.solo_clientes = false
   filter.activo = ''
   filter.get(route('proveedores-clientes.index'), { preserveState: true })
+}
+const eliminar = (id) => {
+  if (window.confirm('¿Eliminar?')) {
+    router.delete(route('inventario.proveedores-clientes.destroy', id), { preserveScroll: true })
+  }
 }
 </script>
 
@@ -121,7 +126,7 @@ const limpiar = () => {
                   <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium space-x-3">
                     <Link :href="route('proveedores-clientes.show', item.id)" class="text-indigo-600 hover:text-indigo-900">Ver</Link>
                     <Link :href="route('proveedores-clientes.edit', item.id)" class="text-yellow-600 hover:text-yellow-900">Editar</Link>
-                    <Link :href="route('proveedores-clientes.destroy', item.id)" method="delete" as="button" class="text-red-600 hover:text-red-900" @click.prevent="if(confirm('¿Eliminar?')) $el.click()">Eliminar</Link>
+                    <button type="button" class="text-red-600 hover:text-red-900" @click="eliminar(item.id)">Eliminar</button>
                   </td>
                 </tr>
                 <tr v-if="!items.data.length">
